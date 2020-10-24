@@ -9,11 +9,11 @@ import "./App.css";
 
 function App() {
   return (
-    <React.Fragment>
+    <div className="app-container">
       <Header />
       <StoriesList />
       <Post />
-    </React.Fragment>
+    </div>
   );
 }
 
