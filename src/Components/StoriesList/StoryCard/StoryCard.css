@@ -1,0 +1,31 @@
+.story-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.story-card {
+  width: 100px;
+  max-width: 250px;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 6px 2px rgba(200, 200, 200, 1);
+  margin-right: 10px;
+  border-radius: 50%;
+  display: block;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.story-card .story-image {
+  border-radius: 50%;
+  max-width: 100%;
+  object-fit: contain;
+  border: 2px solid #111111;
+}
+
+.story__username {
+  text-align: center;
+  text-overflow: ellipsis;
+  width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+}

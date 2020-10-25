@@ -1,0 +1,17 @@
+.stories-container {
+  width: 980px;
+  margin: 0 auto;
+}
+.stories-cards {
+  display: flex;
+  padding: 1rem;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(240, 240, 240, 1);
+  border-radius: 12px;
+}
+
+.stories-cards::-webkit-scrollbar {
+  display: none;
+}

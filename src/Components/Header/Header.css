@@ -1,0 +1,27 @@
+.app__header {
+  border-bottom: 1px solid rgba(220, 220, 220, 1);
+  box-shadow: 2px 2px 2px rgba(220, 220, 220, 1);
+  padding: 10px;
+}
+
+.header-container {
+  width: 980px;
+  margin: 0 auto;
+}
+
+.nav-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 20px;
+}
+
+.navbar-lists {
+  display: flex;
+  flex-direction: row;
+}
+
+.navbar-lists .navbar-item {
+  margin-right: 10px;
+}
