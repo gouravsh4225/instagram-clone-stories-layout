@@ -1,137 +1,94 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+
+import {
+  getUserStories,
+  clearUserStories,
+} from "../../Store/Actions/UserStoriesAction/UserStoriesAction";
 
 import StoryCard from "./StoryCard/StoryCard";
 import StoryViewModal from "./StoryViewModal/StoryViewModal";
+
+import { storyModalViewData } from "../../StaticData/Data";
 import "./StoriesList.css";
 
-const storiesData = [
-  {
-    id: 1,
-    email: "george.bluth@reqres.in",
-    first_name: "George",
-    last_name: "Bluth",
-    avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg",
-  },
-  {
-    id: 2,
-    email: "janet.weaver@reqres.in",
-    first_name: "Janet",
-    last_name: "Weaver",
-    avatar:
-      "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg",
-  },
-  {
-    id: 3,
-    email: "emma.wong@reqres.in",
-    first_name: "Emma",
-    last_name: "Wong",
-    avatar:
-      "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg",
-  },
-  {
-    id: 4,
-    email: "eve.holt@reqres.in",
-    first_name: "Eve",
-    last_name: "Holt",
-    avatar:
-      "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg",
-  },
-  {
-    id: 5,
-    email: "charles.morris@reqres.in",
-    first_name: "Charles",
-    last_name: "Morris",
-    avatar:
-      "https://s3.amazonaws.com/uifaces/faces/twitter/stephenmoon/128.jpg",
-  },
-  {
-    id: 6,
-    email: "tracey.ramos@reqres.in",
-    first_name: "Tracey",
-    last_name: "Ramos",
-    avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/bigmancho/128.jpg",
-  },
-  {
-    id: 7,
-    email: "michael.lawson@reqres.in",
-    first_name: "Michael",
-    last_name: "Lawson",
-    avatar:
-      "https://s3.amazonaws.com/uifaces/faces/twitter/follettkyle/128.jpg",
-  },
-  {
-    id: 8,
-    email: "lindsay.ferguson@reqres.in",
-    first_name: "Lindsay",
-    last_name: "Ferguson",
-    avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/araa3185/128.jpg",
-  },
-  {
-    id: 9,
-    email: "tobias.funke@reqres.in",
-    first_name: "Tobias",
-    last_name: "Funke",
-    avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/vivekprvr/128.jpg",
-  },
-  {
-    id: 10,
-    email: "byron.fields@reqres.in",
-    first_name: "Byron",
-    last_name: "Fields",
-    avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/russoedu/128.jpg",
-  },
-  {
-    id: 11,
-    email: "george.edwards@reqres.in",
-    first_name: "George",
-    last_name: "Edwards",
-    avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/mrmoiree/128.jpg",
-  },
-  {
-    id: 12,
-    email: "rachel.howell@reqres.in",
-    first_name: "Rachel",
-    last_name: "Howell",
-    avatar:
-      "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg",
-  },
-];
-
-function StoriesList() {
-  const [stories, setStories] = useState(storiesData);
-  const [showStoryModal, setShowStoryModal] = useState(false);
-
-  useEffect(() => {
-    // https://reqres.in/api/users?page=1&per_page=30
-    //https://randomuser.me/api/?results=20
-    // fet
-    // return () => {
-    //   cleanup
-    // }
-  }, []);
-
-  function openStories(id) {
-    console.log("heyy", id);
-    setShowStoryModal(true);
+class StoriesList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      stories: [],
+      showStoryModal: false,
+      storyViewData: [],
+    };
   }
 
-  return (
-    <React.Fragment>
-      {showStoryModal && (
-        <StoryViewModal
-          open={showStoryModal}
-          close={(e) => setShowStoryModal(false)}
-        />
-      )}
-      <div className="stories-container pt-1">
-        <div className="stories-cards">
-          {stories.map((item) => (
-            <StoryCard {...item} key={item.id} open={(id) => openStories(id)} />
-          ))}
+  componentDidMount() {
+    this.props.getUserStories();
+  }
+
+  componentDidUpdate() {
+    if (this.props.userStoriesResponse) {
+      this.setState({ stories: this.props.userStoriesResponse });
+      this.props.clearUserStories();
+    }
+  }
+
+  openStories = (id) => {
+    this.setState({
+      showStoryModal: true,
+      storyViewData: storyModalViewData(),
+    });
+  };
+
+  hideShowStoryModal = () => {
+    this.setState({
+      showStoryModal: false,
+      storyViewData: [],
+    });
+  };
+
+  render() {
+    const { showStoryModal, storyViewData, stories } = { ...this.state };
+    return (
+      <React.Fragment>
+        {showStoryModal ? (
+          <StoryViewModal
+            open={showStoryModal}
+            storyViewData={storyViewData}
+            close={(e) => this.hideShowStoryModal()}
+          />
+        ) : null}
+        <div className="stories-container pt-1">
+          <div className="stories-cards">
+            <div className="stories-heading">
+              <div className="stories-title">Stories</div>
+              <div className="stories-all" onClick={this.openStories}>
+                See All Stories
+              </div>
+            </div>
+            <div className="stories-lists">
+              {stories.map((item, index) => (
+                <StoryCard
+                  {...item}
+                  index={index}
+                  key={index}
+                  open={(id) => this.openStories(id)}
+                />
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </React.Fragment>
-  );
+      </React.Fragment>
+    );
+  }
 }
 
-export default StoriesList;
+const mapStateToProps = (state) => ({
+  userStoriesResponse: state.UserStories.userStoriesReponse,
+});
+const mapdispatchtoprops = {
+  getUserStories,
+  clearUserStories,
+};
+
+export default connect(mapStateToProps, mapdispatchtoprops)(StoriesList);
