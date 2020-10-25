@@ -1,17 +1,44 @@
 .stories-container {
   width: 980px;
   margin: 0 auto;
+  position: sticky;
+  top: -18px;
+  z-index: 9;
 }
 .stories-cards {
   display: flex;
+  flex-direction: column;
   padding: 1rem;
-  overflow-y: hidden;
-  overflow-x: scroll;
   background-color: rgba(255, 255, 255, 1);
   border: 1px solid rgba(240, 240, 240, 1);
   border-radius: 12px;
 }
 
-.stories-cards::-webkit-scrollbar {
+.stories-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  min-width: 59%;
+}
+.stories-heading .stories-all {
+  cursor: pointer;
+  text-decoration: underline;
+  transition: 0.3s;
+}
+.stories-heading .stories-all:hover {
+  cursor: pointer;
+  color: blueviolet;
+}
+
+.stories-lists {
+  display: flex;
+  margin-top: 32px;
+  overflow: scroll;
+}
+
+.stories-lists::-webkit-scrollbar {
   display: none;
 }
