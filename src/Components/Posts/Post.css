@@ -2,3 +2,17 @@
   width: 980px;
   margin: 0 auto;
 }
+
+/* On screens that are 992px wide or less, the background color is blue */
+@media screen and (max-width: 992px) {
+  .posts-container {
+    width: 700px;
+  }
+}
+
+/* On screens that are 600px wide or less, the background color is olive */
+@media screen and (max-width: 600px) {
+  .posts-container {
+    width: 100%;
+  }
+}

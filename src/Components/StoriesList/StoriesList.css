@@ -2,7 +2,7 @@
   width: 980px;
   margin: 0 auto;
   position: sticky;
-  top: -18px;
+  top: -61px;
   z-index: 9;
 }
 .stories-cards {
@@ -35,10 +35,24 @@
 
 .stories-lists {
   display: flex;
-  margin-top: 32px;
+  margin-top: 16px;
   overflow: scroll;
 }
 
 .stories-lists::-webkit-scrollbar {
   display: none;
+}
+
+/* On screens that are 992px wide or less, the background color is blue */
+@media screen and (max-width: 992px) {
+  .stories-container {
+    width: 700px;
+  }
+}
+
+/* On screens that are 600px wide or less, the background color is olive */
+@media screen and (max-width: 600px) {
+  .stories-container {
+    width: 100%;
+  }
 }

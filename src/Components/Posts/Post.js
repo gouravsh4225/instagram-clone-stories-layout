@@ -6,7 +6,7 @@ import { getPosts } from "../../StaticData/Data";
 import "./Post.css";
 
 function Post() {
-  const [posts, setPosts] = useState(getPosts());
+  const [posts] = useState(getPosts());
 
   return (
     <div className="posts-container mt-10">

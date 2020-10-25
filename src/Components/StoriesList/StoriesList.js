@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import axios from "axios";
+import {
+  getUserStories,
+  clearUserStories,
+} from "../../Store/Actions/UserStoriesAction/UserStoriesAction";
 
 import StoryCard from "./StoryCard/StoryCard";
 import StoryViewModal from "./StoryViewModal/StoryViewModal";
@@ -8,62 +12,83 @@ import StoryViewModal from "./StoryViewModal/StoryViewModal";
 import { storyModalViewData } from "../../StaticData/Data";
 import "./StoriesList.css";
 
-function StoriesList() {
-  const [stories, setStories] = useState([]);
-  const [showStoryModal, setShowStoryModal] = useState(false);
-  const [storyViewData, setstoryViewData] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(`https://randomuser.me/api/?results=20`)
-      .then((res) => {
-        const { results } = res.data;
-        setStories(results);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  function openStories(id) {
-    setstoryViewData(storyModalViewData());
-    setShowStoryModal(true);
+class StoriesList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      stories: [],
+      showStoryModal: false,
+      storyViewData: [],
+    };
   }
 
-  function hideShowStoryModal() {
-    setstoryViewData([]);
-    setShowStoryModal(false);
+  componentDidMount() {
+    this.props.getUserStories();
   }
 
-  return (
-    <React.Fragment>
-      {showStoryModal ? (
-        <StoryViewModal
-          open={showStoryModal}
-          storyViewData={storyViewData}
-          close={(e) => hideShowStoryModal()}
-        />
-      ) : null}
-      <div className="stories-container pt-1">
-        <div className="stories-cards">
-          <div className="stories-heading">
-            <div className="stories-title">Stories</div>
-            <div className="stories-all">See All Stories</div>
-          </div>
-          <div className="stories-lists">
-            {stories.map((item, index) => (
-              <StoryCard
-                {...item}
-                index={index}
-                key={index}
-                open={(id) => openStories(id)}
-              />
-            ))}
+  componentDidUpdate() {
+    if (this.props.userStoriesResponse) {
+      this.setState({ stories: this.props.userStoriesResponse });
+      this.props.clearUserStories();
+    }
+  }
+
+  openStories = (id) => {
+    this.setState({
+      showStoryModal: true,
+      storyViewData: storyModalViewData(),
+    });
+  };
+
+  hideShowStoryModal = () => {
+    this.setState({
+      showStoryModal: false,
+      storyViewData: [],
+    });
+  };
+
+  render() {
+    const { showStoryModal, storyViewData, stories } = { ...this.state };
+    return (
+      <React.Fragment>
+        {showStoryModal ? (
+          <StoryViewModal
+            open={showStoryModal}
+            storyViewData={storyViewData}
+            close={(e) => this.hideShowStoryModal()}
+          />
+        ) : null}
+        <div className="stories-container pt-1">
+          <div className="stories-cards">
+            <div className="stories-heading">
+              <div className="stories-title">Stories</div>
+              <div className="stories-all" onClick={this.openStories}>
+                See All Stories
+              </div>
+            </div>
+            <div className="stories-lists">
+              {stories.map((item, index) => (
+                <StoryCard
+                  {...item}
+                  index={index}
+                  key={index}
+                  open={(id) => this.openStories(id)}
+                />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </React.Fragment>
-  );
+      </React.Fragment>
+    );
+  }
 }
 
-export default StoriesList;
+const mapStateToProps = (state) => ({
+  userStoriesResponse: state.UserStories.userStoriesReponse,
+});
+const mapdispatchtoprops = {
+  getUserStories,
+  clearUserStories,
+};
+
+export default connect(mapStateToProps, mapdispatchtoprops)(StoriesList);

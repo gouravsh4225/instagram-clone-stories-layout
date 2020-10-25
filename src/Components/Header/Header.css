@@ -25,3 +25,17 @@
 .navbar-lists .navbar-item {
   margin-right: 10px;
 }
+
+/* On screens that are 992px wide or less, the background color is blue */
+@media screen and (max-width: 992px) {
+  .header-container {
+    width: 700px;
+  }
+}
+
+/* On screens that are 600px wide or less, the background color is olive */
+@media screen and (max-width: 600px) {
+  .header-container {
+    width: 100%;
+  }
+}

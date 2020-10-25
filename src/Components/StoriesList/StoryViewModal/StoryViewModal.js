@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./StoryViewModal.css";
 
 function StoryViewModal({ close, storyViewData: { stories } }) {
-  console.log("storyViewData", stories);
   const [currentViewing, setCurrentViewing] = useState({});
   const [currentViewIndex, setCurrentViewIndex] = useState(0);
 
@@ -49,6 +48,7 @@ function StoryViewModal({ close, storyViewData: { stories } }) {
             <img
               src={currentViewing?.story_url?.url}
               className="stories_image"
+              alt={`${currentViewing?.story_url?.url}`}
             />
           ) : (
             <video
@@ -56,6 +56,7 @@ function StoryViewModal({ close, storyViewData: { stories } }) {
               src={currentViewing?.story_url?.url}
               controls
               autoPlay={true}
+              alt={`${currentViewing?.story_url?.url}`}
             />
           )}
         </div>
